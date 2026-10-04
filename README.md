@@ -4,8 +4,10 @@ IPBeaco 将通过公开再分发准入的威胁来源加工为八个静态 IPv4/
 来源、用途、状态、有效期和摘要。默认无需 API 密钥；每天 UTC 00:17（北京时间
 08:17）由 GitHub Actions 更新，持久状态保存在独立 `data` 分支，站点由 Pages 发布。
 
-**项目仓库：[8bitNull/IPBeaco](https://github.com/8bitNull/IPBeaco)。GitHub Pages 尚未部署，
-没有已验证的在线订阅地址。** 2026-10-04 复核时，
+**项目仓库：[8bitNull/IPBeaco](https://github.com/8bitNull/IPBeaco)。
+[订阅站点](https://8bitnull.github.io/IPBeaco/)已上线，
+[当前列表状态](https://8bitnull.github.io/IPBeaco/lists/status.json)可直接查询。**
+2026-10-04 首次线上运行已完成；当次八份列表均为 0 条，无有效防护覆盖。来源复核时，
 blocklist.de 与 Spamhaus DROP 的公共再分发依据未明确，保持禁用；Feodo 的 CC0
 依据明确，已启用采集，但返回的推荐快照生成于 2026-03-04，诊断拒绝其陈旧数据。
 目前 Web、网段、C2 均无当前有效覆盖。文件存在、条数为零或构建成功不代表来源健康。
@@ -16,22 +18,23 @@ blocklist.de 与 Spamhaus DROP 的公共再分发依据未明确，保持禁用�
 
 | 路径 | 方向与用途 | 格式 |
 | --- | --- | --- |
-| `lists/block-ipv4.txt` | Web 入站请求的来源 IPv4，达到封禁证据门槛 | 每行一个 IP |
-| `lists/block-ipv6.txt` | Web 入站请求的来源 IPv6，达到封禁证据门槛 | 每行一个 IP |
-| `lists/observe-ipv4.txt` | Web 入站来源 IPv4，仅观察、验证或限速 | 每行一个 IP |
-| `lists/observe-ipv6.txt` | Web 入站来源 IPv6，仅观察、验证或限速 | 每行一个 IP |
-| `lists/network-ipv4.txt` | 网络层 DROP IPv4 网段，按设备和网络策略使用 | CIDR 与 `#` 来源/版权注释 |
-| `lists/network-ipv6.txt` | 网络层 DROP IPv6 网段，按设备和网络策略使用 | CIDR 与 `#` 来源/版权注释 |
-| `lists/c2-ipv4.txt` | 出站连接的 C2 **目的** IPv4 | 每行一个 IP |
-| `lists/c2-ipv6.txt` | 出站连接的 C2 **目的** IPv6 | 每行一个 IP |
+| [lists/block-ipv4.txt](https://8bitnull.github.io/IPBeaco/lists/block-ipv4.txt) | Web 入站请求的来源 IPv4，达到封禁证据门槛 | 每行一个 IP |
+| [lists/block-ipv6.txt](https://8bitnull.github.io/IPBeaco/lists/block-ipv6.txt) | Web 入站请求的来源 IPv6，达到封禁证据门槛 | 每行一个 IP |
+| [lists/observe-ipv4.txt](https://8bitnull.github.io/IPBeaco/lists/observe-ipv4.txt) | Web 入站来源 IPv4，仅观察、验证或限速 | 每行一个 IP |
+| [lists/observe-ipv6.txt](https://8bitnull.github.io/IPBeaco/lists/observe-ipv6.txt) | Web 入站来源 IPv6，仅观察、验证或限速 | 每行一个 IP |
+| [lists/network-ipv4.txt](https://8bitnull.github.io/IPBeaco/lists/network-ipv4.txt) | 网络层 DROP IPv4 网段，按设备和网络策略使用 | CIDR 与 `#` 来源/版权注释 |
+| [lists/network-ipv6.txt](https://8bitnull.github.io/IPBeaco/lists/network-ipv6.txt) | 网络层 DROP IPv6 网段，按设备和网络策略使用 | CIDR 与 `#` 来源/版权注释 |
+| [lists/c2-ipv4.txt](https://8bitnull.github.io/IPBeaco/lists/c2-ipv4.txt) | 出站连接的 C2 **目的** IPv4 | 每行一个 IP |
+| [lists/c2-ipv6.txt](https://8bitnull.github.io/IPBeaco/lists/c2-ipv6.txt) | 出站连接的 C2 **目的** IPv6 | 每行一个 IP |
 
 Web 封禁需要两个独立家族的有效证据，或配置中明确认可的强单源；观察与封禁档
 互斥。同一家族的多个端点不算独立证据。网段、C2 不参与 Web 档位合并，不能将
 C2 目的地址作为攻击者来源导入入站 WAF。项目不聚合 IP 成大网段、不展开 CIDR，
 也不接收 ASN-DROP。
 
-部署后的主示例为 `https://<owner>.github.io/IPBeaco/lists/block-ipv4.txt`；
-`<owner>` 是部署时替换为 GitHub 用户名或组织名的 URL 参数，不是现有站点。
+列表在更新工作流中生成到 `site/lists/` 并部署至 Pages，**不会提交到 main 代码分支**；
+上表链接可直接下载，`data` 分支仅保存持久状态。Fork 后的 URL 模板为
+`https://<owner>.github.io/IPBeaco/lists/block-ipv4.txt`，将 `<owner>` 替换为自己的账号。
 全部 URL、摘要及一致性同步步骤见[订阅文档](docs/subscriptions.md)。
 **TXT 本身没有失效逻辑**，必须配合 `lists/status.json` 和 `lists/metadata.json`。
 

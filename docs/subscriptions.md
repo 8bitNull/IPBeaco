@@ -1,22 +1,26 @@
 # 订阅与客户端同步
 
-当前尚未部署。以下是部署后使用的 URL 模板，`<owner>` 必须替换为自己的 GitHub
-用户名或组织名；若更改仓库名或配置自定义域名，也需相应调整基址。不要将模板
-当作已发布链接。主示例：`https://<owner>.github.io/IPBeaco/lists/block-ipv4.txt`。
+当前站点为 https://8bitnull.github.io/IPBeaco/ ，下表是实际下载地址。
+2026-10-04 首次发布时八份列表均为 0 条：Web/网段为 unavailable，C2 为 stale，
+不能作为健康空名单导入。后续请读取 status 判断当时的可用性。
 
-| URL 模板 | 用途 |
+这些文件由工作流生成到 `site/lists/` 后发布到 Pages，不保存在 main 分支。
+Fork 的主示例为 `https://<owner>.github.io/IPBeaco/lists/block-ipv4.txt`，
+`<owner>` 替换为自己的 GitHub 用户名或组织名；更改仓库名或域名时也需调整基址。
+
+| 下载地址 | 用途 |
 | --- | --- |
-| `https://<owner>.github.io/IPBeaco/lists/block-ipv4.txt` | 入站 Web 来源 IPv4 封禁 |
-| `https://<owner>.github.io/IPBeaco/lists/block-ipv6.txt` | 入站 Web 来源 IPv6 封禁 |
-| `https://<owner>.github.io/IPBeaco/lists/observe-ipv4.txt` | 入站 Web 来源 IPv4 观察、验证、限速 |
-| `https://<owner>.github.io/IPBeaco/lists/observe-ipv6.txt` | 入站 Web 来源 IPv6 观察、验证、限速 |
-| `https://<owner>.github.io/IPBeaco/lists/network-ipv4.txt` | 网络层 IPv4 CIDR |
-| `https://<owner>.github.io/IPBeaco/lists/network-ipv6.txt` | 网络层 IPv6 CIDR |
-| `https://<owner>.github.io/IPBeaco/lists/c2-ipv4.txt` | 出站 C2 目的 IPv4 |
-| `https://<owner>.github.io/IPBeaco/lists/c2-ipv6.txt` | 出站 C2 目的 IPv6 |
+| [block-ipv4.txt](https://8bitnull.github.io/IPBeaco/lists/block-ipv4.txt) | 入站 Web 来源 IPv4 封禁 |
+| [block-ipv6.txt](https://8bitnull.github.io/IPBeaco/lists/block-ipv6.txt) | 入站 Web 来源 IPv6 封禁 |
+| [observe-ipv4.txt](https://8bitnull.github.io/IPBeaco/lists/observe-ipv4.txt) | 入站 Web 来源 IPv4 观察、验证、限速 |
+| [observe-ipv6.txt](https://8bitnull.github.io/IPBeaco/lists/observe-ipv6.txt) | 入站 Web 来源 IPv6 观察、验证、限速 |
+| [network-ipv4.txt](https://8bitnull.github.io/IPBeaco/lists/network-ipv4.txt) | 网络层 IPv4 CIDR |
+| [network-ipv6.txt](https://8bitnull.github.io/IPBeaco/lists/network-ipv6.txt) | 网络层 IPv6 CIDR |
+| [c2-ipv4.txt](https://8bitnull.github.io/IPBeaco/lists/c2-ipv4.txt) | 出站 C2 目的 IPv4 |
+| [c2-ipv6.txt](https://8bitnull.github.io/IPBeaco/lists/c2-ipv6.txt) | 出站 C2 目的 IPv6 |
 
-辅助文件为 `https://<owner>.github.io/IPBeaco/lists/status.json` 和
-`https://<owner>.github.io/IPBeaco/lists/metadata.json`。站点首页显示当次构建版本、
+辅助文件为 [status.json](https://8bitnull.github.io/IPBeaco/lists/status.json) 和
+[metadata.json](https://8bitnull.github.io/IPBeaco/lists/metadata.json)。站点首页显示当次构建版本、
 各列表条数、状态及截止时间；实时判断以状态和证据为准，不能只看首页更新时间。
 
 ## 同步协议

@@ -7,8 +7,8 @@
 
 首次线上运行属于发布检查阶段，需要已授权的 GitHub 仓库和远端账号。在仓库
 Settings → Pages 中将 Source 设为 **GitHub Actions**，确认 Actions 可使用下表权限，
-以及 `github-pages` 环境允许 `main` 部署。当前本地工作区尚无已连接的远端，
-未执行真实 GitHub 更新或 Pages 部署，也没有在线站点链接。
+以及 `github-pages` 环境允许 `main` 部署。本仓库已于 2026-10-04 完成首次初始化，
+站点为 https://8bitnull.github.io/IPBeaco/ 。`data` 已存在，后续运行不要开启 bootstrap。
 
 将工作流发布到默认分支 `main` 后，手动运行 **Update IP intelligence**，选择
 `main`，仅在远端确实没有 `data` 分支的首次运行勾选 `bootstrap_state`。后续运行
@@ -115,7 +115,7 @@ python -m pytest tests/test_cli.py::test_failed_deployment_retry_rejects_expired
 上述延迟重试测试使用本地 bare Git 远端、合成来源与可控时钟，模拟状态已提交但
 未能部署。时钟推进 8 天后旧产物被拒绝；从远端恢复状态并在上游不可用时全量
 重跑，八个列表均清空、状态正常前进且防复活标记保留。PR 测试不连接真实来源，
-不会因动态上游状态失败。首次实际 GitHub/Pages 部署仍需在发布阶段验证。
+不会因动态上游状态失败。首次线上发布验收记录见本文末尾。
 
 ## Fork、停止运行与当前覆盖
 
@@ -194,9 +194,14 @@ metadata 的来源、原因和时间复核。
 
 ## 获准远端后的实际发布验收
 
-当前没有远端或本地作者身份，只交付本地结果，未 push、未修改 Pages 设置、
-未部署，也未生成真实在线 URL。以后在已确定且获准发布的仓库中：发布 main
-代码，按上述设置 Actions/Pages 和 data 保护，首次手动 bootstrap，检查 data
-状态提交和 deploy 成功，再只读 GET 八个 TXT、status、metadata。按订阅协议
-核对同一 build_id、原始摘要、条数、方向、证据期限和当时的来源状态，记录真实
-URL。下载验收不向实际防火墙导入规则；没有完成该步骤不能称为项目已经上线。
+2026-10-04 已在 [8bitNull/IPBeaco](https://github.com/8bitNull/IPBeaco) 完成首次发布：
+
+- Pages 使用 GitHub Actions；活动规则集禁止 `data` 分支删除和非快进推送。
+- [首次更新任务](https://github.com/8bitNull/IPBeaco/actions/runs/37213820028)成功，
+  build_id 为 `37213820028-1`，生成时间为 2026-10-04 15:39:38 UTC。
+- [站点](https://8bitnull.github.io/IPBeaco/)的八个 TXT、status、metadata 已实际下载；
+  两次 status 一致，完整产物通过摘要、结构、条数、用途和实际时间校验。
+- 当次八列表均为 0 条；Web/网段为 unavailable，C2 为 stale，有效期均为 null。
+  部署成功不代表已有有效防护数据，没有向任何实际防火墙导入规则。
+
+其他仓库首次部署也应完成同样验收，并记录自己的运行编号、URL 和来源状态。
