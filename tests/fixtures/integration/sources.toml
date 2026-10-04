@@ -1,0 +1,39 @@
+[[sources]]
+id = 'web'
+family = 'synthetic-web'
+purpose = 'web'
+adapter = 'blocklist_de'
+url = 'https://example.invalid/web'
+enabled = true
+public_approved = true
+license_url = 'https://example.invalid/license'
+reviewed_at = 2026-10-04T00:00:00Z
+time_mode = 'unknown'
+max_tier = 'observe'
+category = 'web_attack'
+
+[[sources]]
+id = 'network'
+family = 'synthetic-network'
+purpose = 'network'
+adapter = 'spamhaus_drop'
+url = 'https://example.invalid/network'
+enabled = true
+public_approved = true
+license_url = 'https://example.invalid/license'
+reviewed_at = 2026-10-04T00:00:00Z
+time_mode = 'snapshot'
+category = 'network_drop'
+
+[[sources]]
+id = 'c2'
+family = 'synthetic-c2'
+purpose = 'c2'
+adapter = 'feodo'
+url = 'https://example.invalid/c2'
+enabled = true
+public_approved = true
+license_url = 'https://example.invalid/license'
+reviewed_at = 2026-10-04T00:00:00Z
+time_mode = 'snapshot'
+category = 'botnet_c2'

@@ -1,0 +1,53 @@
+name: 误报反馈
+description: 反馈公开列表中的误报或请求调整白名单
+title: '[误报] '
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请只提供可以公开的信息，不要附带私有日志、内部资产清单、个人信息、密钥或 token。
+        IP/CIDR 和构建版本用于定位证据；提交反馈不会自动删除公开规则。
+        项目白名单适用于所有订阅者，仅本地适用的例外请保存在私有白名单。
+  - type: input
+    id: target
+    attributes:
+      label: IP 或 CIDR
+      description: 请填写误报的公开 IPv4/IPv6 地址或网段。
+    validations:
+      required: true
+  - type: dropdown
+    id: list
+    attributes:
+      label: 列表名
+      options:
+        - lists/block-ipv4.txt
+        - lists/block-ipv6.txt
+        - lists/observe-ipv4.txt
+        - lists/observe-ipv6.txt
+        - lists/network-ipv4.txt
+        - lists/network-ipv6.txt
+        - lists/c2-ipv4.txt
+        - lists/c2-ipv6.txt
+    validations:
+      required: true
+  - type: input
+    id: build_id
+    attributes:
+      label: build_id
+      description: 从订阅时的 lists/status.json 或站点首页取得，不要只填写下载时间。
+    validations:
+      required: true
+  - type: textarea
+    id: reason
+    attributes:
+      label: 误报理由
+      description: 提供可公开的用途说明、受影响情况和可核实依据，先删除私有信息。
+    validations:
+      required: true
+  - type: textarea
+    id: requested_action
+    attributes:
+      label: 希望的处理
+      description: 例如复核来源、公开排除该地址，或说明规则用途。
+    validations:
+      required: true

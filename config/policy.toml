@@ -1,0 +1,10 @@
+[policy]
+block_hours = 72
+observe_hours = 168
+snapshot_hours = 48
+future_skew_seconds = 300
+anomaly_new = 1000
+anomaly_ratio = 3
+max_bytes = 10485760
+timeout_seconds = 20
+attempts = 3

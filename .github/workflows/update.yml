@@ -1,0 +1,61 @@
+name: Update IP intelligence
+
+on:
+  schedule:
+    - cron: '17 0 * * *'
+  workflow_dispatch:
+    inputs:
+      bootstrap_state:
+        description: '仅首次创建 data 分支时开启'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: ipbeaco-publish
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install locked runtime and build dependencies
+        run: |
+          python -m pip install --require-hashes -r requirements.lock
+          python -m pip install --no-index --no-build-isolation --no-deps -e .
+      - name: Read state
+        env:
+          BOOTSTRAP_STATE: ${{ inputs.bootstrap_state || false }}
+        run: |
+          args=()
+          if [ "$BOOTSTRAP_STATE" = "true" ]; then args+=(--bootstrap); fi
+          ipbeaco state pull --remote origin --dir state --revision-file state-base.txt "${args[@]}"
+      - name: Build
+        env:
+          BUILD_ID: ${{ github.run_id }}-${{ github.run_attempt }}
+        run: ipbeaco run --config config --state state --out site --build-id "$BUILD_ID"
+      - name: Commit state
+        run: ipbeaco state push --remote origin --dir state --revision-file state-base.txt
+      - name: Check freshness before uploading
+        run: ipbeaco validate --site site
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Check freshness before deployment
+        run: ipbeaco validate --site site
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v5

@@ -1,0 +1,72 @@
+[[sources]]
+id = "blocklist-de-apache"
+family = "blocklist-de"
+purpose = "web"
+adapter = "blocklist_de"
+url = "https://lists.blocklist.de/lists/apache.txt"
+enabled = false
+public_approved = false
+license_url = "https://www.blocklist.de/en/terms.html"
+time_mode = "unknown"
+max_tier = "observe"
+trusted_single = false
+independent = false
+category = "web_attack"
+disabled_reason = "Public redistribution permission and category/time review are pending; apache.txt and all.txt had identical SHA-256 during review."
+ip_versions = [4, 6]
+
+[[sources]]
+id = "spamhaus-drop-v4"
+family = "spamhaus"
+purpose = "network"
+adapter = "spamhaus_drop"
+url = "https://www.spamhaus.org/drop/drop_v4.json"
+enabled = false
+public_approved = false
+license_url = "https://www.spamhaus.org/blocklists/drop-fair-use-policy/"
+time_mode = "snapshot"
+max_tier = "block"
+category = "network_drop"
+attribution = "Spamhaus DROP; retain upstream date and copyright notices."
+disabled_reason = "Public redistribution and output format compliance with DROP terms await review; a free download is not unconditional mirroring permission."
+ip_versions = [4]
+
+[[sources]]
+id = "spamhaus-drop-v6"
+family = "spamhaus"
+purpose = "network"
+adapter = "spamhaus_drop"
+url = "https://www.spamhaus.org/drop/drop_v6.json"
+enabled = false
+public_approved = false
+license_url = "https://www.spamhaus.org/blocklists/drop-fair-use-policy/"
+time_mode = "snapshot"
+max_tier = "block"
+category = "network_drop"
+attribution = "Spamhaus DROP; retain upstream date and copyright notices."
+disabled_reason = "Public redistribution and output format compliance with DROP terms await review; a free download is not unconditional mirroring permission."
+ip_versions = [6]
+
+[[sources]]
+id = "feodo-recommended"
+family = "abuse-ch-feodo"
+purpose = "c2"
+adapter = "feodo"
+url = "https://feodotracker.abuse.ch/downloads/ipblocklist_recommended.txt"
+enabled = true
+public_approved = true
+license_url = "https://feodotracker.abuse.ch/blocklist/"
+reviewed_at = 2026-10-04T14:16:23Z
+time_mode = "snapshot"
+max_tier = "block"
+category = "c2"
+attribution = "Feodo Tracker, abuse.ch; upstream data published under CC0."
+disabled_reason = ""
+ip_versions = [4, 6]
+# Official CC0 and format statement rechecked 2026-10-04 14:16 UTC;
+# public redistribution is permitted. See docs/sources.md for evidence.
+# The reviewed file dated 2026-03-04 is stale. Runtime time validation must
+# reject it; public approval alone does not make its evidence current.
+
+[optional.abuseipdb]
+enabled = false

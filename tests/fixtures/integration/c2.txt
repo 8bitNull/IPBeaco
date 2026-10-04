@@ -1,0 +1,5 @@
+# abuse.ch Feodo Tracker Botnet C2 IP Blocklist (recommended)
+# Last updated: 2026-10-04 00:00:00 UTC
+# DstIP
+1.1.1.1
+# END 1 entries

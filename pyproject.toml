@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=75,<85"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ipbeaco"
+version = "0.1.0"
+description = "Public threat feeds with explicit evidence and source provenance"
+requires-python = ">=3.12,<3.13"
+dependencies = ["httpx>=0.28,<0.29"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<9", "ruff>=0.11,<1", "pip-tools>=7,<8"]
+
+[project.scripts]
+ipbeaco = "ipbeaco.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+
+[tool.ruff.format]
+# Design and implementation plans contain illustrative, non-executable snippets.
+exclude = ["docs/superpowers/**"]
