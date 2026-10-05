@@ -173,3 +173,29 @@ C2 最长 48 小时；Web block 最长 72 小时，observe 最长 7 天；更短
 
 许可不明时保持禁用，明确报告覆盖不足；不自动联系来源维护者，不通过别处镜像
 绕过准入。固定测试样本只用于离线测试，不能加入生产 config 或上线 artifact。
+
+## 后续候选来源核查（2026-10-05）
+
+本轮只读核查旨在补足其他七份列表，没有修改生产来源准入或订阅协议。
+
+| 候选 | 实际核查结果 | 处理 |
+| --- | --- | --- |
+| SSLBL Botnet C2 IP TXT / CSV | 两个官方端点 HTTP 200，但正文明确 `This list has been deprecated on 2025-01-03`；TXT 生成于 2025-01-02，CSV 于 2025-01-03 | 不接入；文件修改时间不能替换正文时间，也不将停用文件视为当前健康空快照 |
+| Dataplane sshpwauth | HTTP 200；正文明确仅免费非商业使用，未经明确许可禁止全部或部分再分发；同时声明不是封禁列表，内容为 SSH 登录尝试 | 不接入公开产物；不符合既定非商业来源排除政策，也不是 Web 专属证据 |
+| Emerging Threats compromised-ips | HTTP 200，正文为纯 IP，无逐地址时间、生成头或用途分类；下载说明针对 ET OPEN 规则包，尚未确立该独立 TXT 的再分发依据 | 暂不准入；不能据名称推断为活动 C2 或 Web 攻击，更不能借 HTTP Last-Modified 刷新证据 |
+| ThreatFox | 官方 API 文档要求免费 Auth-Key；当前文档及 Terms of Use 强调公平使用、查询量限制，商业用途可能需付费；本轮未找到明确适用于公开加工列表的再分发授权 | 保留后续候选；免费密钥解决认证，不代表允许公共镜像；未获取密钥、未调用认证 API |
+| URLhaus | 官方 API 文档要求 Auth-Key，内容为恶意 URL/载荷投递；域名解析得到的 IP 不等于攻击者来源或活动 C2 | 不用于填充当前 Web/C2 列表；未获取密钥或调用认证 API |
+| blocklist.de 官方 export / terms | 本轮两页返回 HTTP 403，未能重新核实 | 保持原禁用结论；访问失败不构成授权或授权撤回证据 |
+
+核查链接：
+
+- [SSLBL IP TXT](https://sslbl.abuse.ch/blacklist/sslipblacklist.txt)、[CSV](https://sslbl.abuse.ch/blacklist/sslipblacklist.csv)、[说明](https://sslbl.abuse.ch/blacklist/)。
+- [Dataplane 原始报告与正文条款](https://dataplane.org/sshpwauth.txt)。
+- [ET compromised-ips](https://rules.emergingthreats.net/blockrules/compromised-ips.txt)、[ET OPEN 下载说明](https://rules.emergingthreats.net/OPEN_download_instructions.html)。
+- [ThreatFox API](https://threatfox.abuse.ch/api/)、[FAQ](https://threatfox.abuse.ch/faq/)、[abuse.ch 当前使用条款](https://abuse.ch/terms-of-use/)、[URLhaus API](https://urlhaus.abuse.ch/api/)。
+
+本轮没有找到同时满足用途、时间和公开再分发要求的新增可启用来源。七份空列表继续
+保留固定路径与真实状态。优先方向是明确授权且带事件时间的 Web 数据，以及仍维护的
+活动 C2 feed。可选免费 API key 仍可作为后续认证机制，但启用前必须另行确认公共输出
+依据和真实记录时间。私有 WAF 日志可改善自有设备保护，必须单独设计私有部署，不能
+默认流入本仓库公开 Pages；它也不能补足独立网段或出站 C2 的证据。
