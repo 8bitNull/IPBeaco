@@ -10,7 +10,12 @@ from urllib.parse import urlsplit
 
 from ipbeaco.models import Config, ConfigError, Settings, SourceSpec
 
-_ADAPTER_PURPOSES = {"blocklist_de": "web", "spamhaus_drop": "network", "feodo": "c2"}
+_ADAPTER_PURPOSES = {
+    "blocklist_de": "web",
+    "spamhaus_drop": "network",
+    "feodo": "c2",
+    "cins_army": "web",
+}
 
 
 def _error(identity: str, field: str, reason: str) -> ConfigError:
@@ -70,6 +75,17 @@ def validate_source(spec: SourceSpec) -> None:
         raise _error(
             identity, "purpose", f"{spec.adapter} requires {_ADAPTER_PURPOSES[spec.adapter]}"
         )
+    if spec.adapter == "cins_army":
+        for name, expected in (
+            ("time_mode", "unknown"),
+            ("max_tier", "observe"),
+            ("category", "unknown"),
+            ("independent", False),
+            ("trusted_single", False),
+            ("ip_versions", (4,)),
+        ):
+            if getattr(spec, name) != expected:
+                raise _error(identity, name, f"cins_army requires {expected}")
     if spec.purpose in ("network", "c2") and spec.time_mode != "snapshot":
         raise _error(identity, "time_mode", "network and c2 require snapshot")
     if spec.max_tier not in ("block", "observe"):

@@ -7,12 +7,11 @@ IPBeaco 将通过公开再分发准入的威胁来源加工为八个静态 IPv4/
 **项目仓库：[8bitNull/IPBeaco](https://github.com/8bitNull/IPBeaco)。
 [订阅站点](https://8bitnull.github.io/IPBeaco/)已上线，
 [当前列表状态](https://8bitnull.github.io/IPBeaco/lists/status.json)可直接查询。**
-2026-10-04 首次线上运行已完成；当次八份列表均为 0 条，无有效防护覆盖。来源复核时，
-blocklist.de 与 Spamhaus DROP 的公共再分发依据未明确，保持禁用；Feodo 的 CC0
-依据明确，已启用采集，但返回的推荐快照生成于 2026-03-04，诊断拒绝其陈旧数据。
-目前 Web、网段、C2 均无当前有效覆盖。文件存在、条数为零或构建成功不代表来源健康。
-首次采集该快照时，Web/网段列表为 `unavailable`，C2 为 `stale`，有效期均为 `null`；
-若后来网络失败，C2 也可能显示 `degraded` 且无有效期，以当次状态为准。
+新增 CINS Army 公开 IPv4 信誉来源，仅贡献 `observe-ipv4.txt`，用于观察、验证或
+限速，不代表确认的 Web 攻击。首次出现后最多保留 7 天，重复下载不会续期；
+实际条数、有效期和来源健康以当前状态文件为准。blocklist.de 和 Spamhaus DROP
+仍禁用；Feodo 已通过 CC0 准入，但复核的推荐快照陈旧，运行时拒绝。
+Web 封禁、IPv6 观察、网段和 C2 暂无已确认的当前覆盖。
 
 ## 列表与用途
 
@@ -79,7 +78,7 @@ ipbeaco validate --site local-site
 Fork 后需启用 Actions，并将 Settings → Pages → Source 设为 **GitHub Actions**。
 在获准发布的仓库中首次手动触发更新，仅在远端没有 `data` 分支时开启
 `bootstrap_state`；后续每天自动更新。完整设置、状态保护与恢复见
-[运维文档](docs/operations.md)，许可、时间语义与本次四项诊断见
+[运维文档](docs/operations.md)，许可、时间语义与来源诊断见
 [来源准入记录](docs/sources.md)。每日调度可能延迟，且慢于 Feodo 建议的更新频率。
 
 误报通过仓库的 **误报反馈** Issue 模板由用户手动提交，注明 IP/CIDR、列表名、

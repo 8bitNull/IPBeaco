@@ -132,6 +132,8 @@ def _page(manifest: dict, licenses: dict) -> bytes:
         f"<p>构建版本：{escape(manifest['build_id'])}</p>",
         "<p>Web block 用于入站请求的来源 IP 封禁；observe 仅用于观察、验证或限速。"
         "C2 是出站连接的目的 IP；network 是网络层 CIDR，文件含 # 来源与版权注释。</p>",
+        "<p>CINS Army 为广泛 IPv4 信誉来源，仅进入 observe；没有逐 IP 攻击时间，"
+        "不代表确认的 Web 攻击。首次出现后最多观察 7 天，重复下载不续期。</p>",
         "<p>导入前核对 WAF/防火墙的条目容量、IPv6、CIDR、注释和原子替换能力；"
         "超容量时停止导入，不静默截断。厂商 API 适配需另行实现。</p>",
         "<p>TXT 不会自动失效。同步前后核对状态、build_id、有效期、条数和 SHA-256；"

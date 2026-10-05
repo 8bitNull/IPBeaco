@@ -334,6 +334,7 @@ def test_production_config_loads_with_approved_sources_only():
         "spamhaus-drop-v4",
         "spamhaus-drop-v6",
         "feodo-recommended",
+        "cins-army",
     ]
     assert all(not spec.enabled for spec in config.sources[:3])
     assert all(spec.disabled_reason for spec in config.sources[:3])

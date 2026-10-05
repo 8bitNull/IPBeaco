@@ -171,7 +171,7 @@ def test_registry_exposes_all_adapter_contracts():
         from ipbeaco.adapters import PARSERS
     except ModuleNotFoundError:
         pytest.fail("missing adapter registry")
-    assert set(PARSERS) == {"blocklist_de", "spamhaus_drop", "feodo"}
+    assert set(PARSERS) == {"blocklist_de", "spamhaus_drop", "feodo", "cins_army"}
     for name, module in (
         ("blocklist_de", "blocklist_de"),
         ("spamhaus_drop", "spamhaus"),

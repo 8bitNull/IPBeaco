@@ -2,7 +2,8 @@
 
 当前站点为 https://8bitnull.github.io/IPBeaco/ ，下表是实际下载地址。
 2026-10-04 首次发布时八份列表均为 0 条：Web/网段为 unavailable，C2 为 stale，
-不能作为健康空名单导入。后续请读取 status 判断当时的可用性。
+不能作为健康空名单导入。新增 CINS Army 后，IPv4 观察列表可获得信誉候选，
+仅用于观察、验证或限速；重复下载不会续期。请读取 status 判断当时的可用性。
 
 这些文件由工作流生成到 `site/lists/` 后发布到 Pages，不保存在 main 分支。
 Fork 的主示例为 `https://<owner>.github.io/IPBeaco/lists/block-ipv4.txt`，

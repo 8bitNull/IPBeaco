@@ -13,12 +13,34 @@
 | `spamhaus-drop-v4` | `spamhaus` / 网络层 IPv4 CIDR | 否 / 否 | 无；公开镜像/加工输出的许可与格式义务仍待明确 |
 | `spamhaus-drop-v6` | `spamhaus` / 网络层 IPv6 CIDR | 否 / 否 | 无；与 v4 同家族，许可及较短上游到期示例仍待明确 |
 | `feodo-recommended` | `abuse-ch-feodo` / 出站 C2 目的 IP | 是 / 是 | 无；CC0 准入，但推荐快照的 3 月生成时间已陈旧，运行时拒绝 |
+| `cins-army` | `cins` / IPv4 信誉观察 | 是 / 是 | 2026-10-05 复核 15,000 个公网 IPv4；仅观察，时间未知 |
 | 可选 AbuseIPDB | 未接入 / 不贡献公开证据 | 否 / 未准入 | 仅禁用配置；不实现 API 拉取或公开数据 |
 
-**目前三种用途都无当前有效覆盖。** blocklist.de/Spamhaus 未通过公共输出准入，
+**CINS 提供 IPv4 观察候选；Web 封禁、网段和 C2 暂无当前有效覆盖。** blocklist.de/Spamhaus 未通过公共输出准入，
 Feodo 已通过许可准入但未通过时效检查。不能为完成上线而启用存疑来源；以后
 官方许可或数据变化时，需重新记录依据、更新配置并运行真实诊断。各端点不自动
 成为独立家族，Spamhaus v4/v6 也不是两份独立 Web 证据。
+
+## CINS Army
+
+核查时间：**2026-10-05 02:28:48 UTC**。官方[说明与使用授权](https://cinsscore.com/)
+及[TXT 数据](https://cinsscore.com/list/ci-badguys.txt)均返回 HTTP 200。针对该列表的原文：
+
+> The CINS Army list is here and at Emerging Threats as part of their Open Source Community.
+> The link below is provided as a simple text file, with which you can parse and use in any way you see fit.
+> We assume Network Administrators will use the IP addresses from this file in their firewall blacklists
+> and possibly in custom IDS and IPS signatures.
+
+本项目依据这一数据专属使用授权批准公开加工输出，自愿署名 CINS Army、CINSscore.com；
+不将代码许可套用于数据。此次下载包含 15,000 个唯一公网 IPv4，无注释、IPv6 或非公网地址，
+SHA-256 为 `7b91a02d0cc4f86a43c114d7fc5d8f7774326d1a3c43d580127eb8edb5686e02`。
+
+这是广泛信誉列表，没有逐 IP 攻击时间或可靠 Web 专属分类。固定使用独立适配器
+`cins_army`、家族 `cins`、`time_mode=unknown`、`category=unknown`、
+`max_tier=observe`、`independent=false`、`trusted_single=false`、IPv4 only。
+仅进入观察列表，不能贡献 Web 封禁、网段或出站 C2。HTTP Last-Modified 不作攻击时间。
+首次出现起最多 7 天，重复下载不续期；只有成功确认消失后再出现才启动新观察期。
+格式错误或下载失败不能确认消失。条数与状态以每次实际产物为准。
 
 ## blocklist.de Apache
 
@@ -137,6 +159,7 @@ v4 的 accepted_count 是公网地址规范化后的数量，不与原始记录�
 | `blocklist_de` | `web` | `observed`、`rolling`、`unknown` |
 | `spamhaus_drop` | `network` | `snapshot` |
 | `feodo` | `c2` | `snapshot` |
+| `cins_army` | `web`（仅 IPv4 observe） | `unknown` |
 
 Web 的 `unknown` 仅允许 `max_tier=observe`，`rolling` 必须提供 1–72 小时的
 `window_hours`；家族、独立性和可信单来源批准仍由维护者配置。新增适配器需明确

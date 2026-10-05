@@ -216,7 +216,9 @@ def advance(
                     candidate = old
                 candidates[target] = candidate
             valid_candidates = [e for e in candidates.values() if now < e.expires_at]
-            if records and not valid_candidates:
+            # Unknown-time feeds can confirm absence even after all retained
+            # observations expire. They still cannot renew continuously present IPs.
+            if records and not valid_candidates and spec.time_mode != "unknown":
                 sources[sid] = replace(health, status="stale", error="stale_snapshot")
                 continue
             previous_targets = {target for target, p in old_presence.items() if p.present}
