@@ -3,6 +3,9 @@
 主分支 `main` 保存代码、配置、规则、文档和测试；独立 `data` 分支只保存
 `state.json` 与 `state.sha256`。Actions 缓存和 Pages artifact 都不能替代持久状态。
 
+本地 Spamhaus DROP 使用独立的 `drop-local` 命令和本地状态，不进入下面的
+公开发布流程。每日运行、POSIX 锁及失败/过期处理见[本地 DROP](local-drop.md)。
+
 ## 首次启用
 
 首次线上运行属于发布检查阶段，需要已授权的 GitHub 仓库和远端账号。在仓库

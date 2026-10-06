@@ -9,3 +9,6 @@ htmlcov/
 build/
 dist/
 .superpowers/
+
+/drop-local/
+/drop-local-state/

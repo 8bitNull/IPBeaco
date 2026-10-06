@@ -73,6 +73,10 @@ ipbeaco validate --site local-site
 输出目录。清理过期数据不会因全部来源失败而暂停。validate 校验产物一致性和时间，
 允许明确标注不可用的空列表；通过 validate 不代表当前有威胁情报覆盖。
 
+需要单独在本地使用 Spamhaus DROP 时，运行 `ipbeaco drop-local` 并用
+`ipbeaco validate-drop-local` 校验。IPv4/IPv6 完整批次、每日请求冷却、独立状态
+路径及过期处理见[本地 DROP 文档](docs/local-drop.md)；此命令不改变公共准入。
+
 ## 部署、来源与反馈
 
 Fork 后需启用 Actions，并将 Settings → Pages → Source 设为 **GitHub Actions**。

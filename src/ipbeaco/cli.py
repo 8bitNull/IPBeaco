@@ -14,6 +14,7 @@ from ipbeaco.config import load_config_dir
 from ipbeaco.export import validate_site
 from ipbeaco.fetch import download
 from ipbeaco.git_store import pull_state, push_state
+from ipbeaco.local_drop import run_local_drop, validate_local_drop
 from ipbeaco.models import Config, ConfigError, SourceError, StateError
 from ipbeaco.pipeline import run_once
 from ipbeaco.state import _atomic_write
@@ -40,6 +41,13 @@ def _parser() -> argparse.ArgumentParser:
     run.add_argument("--bootstrap", action="store_true")
     validate = commands.add_parser("validate", help="Validate a site at the current time")
     validate.add_argument("--site", type=Path, required=True)
+    local = commands.add_parser("drop-local", help="Generate a complete local-only DROP batch")
+    local.add_argument("--config", type=Path, required=True)
+    local.add_argument("--state", type=Path, required=True)
+    local.add_argument("--out", type=Path, required=True)
+    local.add_argument("--build-id", required=True)
+    validate_local = commands.add_parser("validate-drop-local", help="Validate a local DROP batch")
+    validate_local.add_argument("--dir", type=Path, required=True)
     inspect = commands.add_parser("inspect-source", help="Read-only format and freshness check")
     inspect.add_argument("--config", type=Path, required=True, help="Configuration directory")
     inspect.add_argument("--source", required=True)
@@ -133,10 +141,20 @@ def main(argv: list[str] | None = None) -> int:
             validate_site(args.site, now)
             print(f"Validated: {args.site}")
             return 0
+        if args.command == "validate-drop-local":
+            validate_local_drop(args.dir, now)
+            print(f"Validated local DROP: {args.dir}")
+            return 0
         config = load_config_dir(args.config)
         with http_client() as client:
             if args.command == "inspect-source":
                 _inspect(config, args.source, now, client)
+                return 0
+            if args.command == "drop-local":
+                run_local_drop(
+                    config, args.state, args.out, client, now, args.build_id, clock=utc_now
+                )
+                print(f"Generated and validated local DROP {args.build_id}: {args.out}")
                 return 0
             run_once(
                 config, args.state, args.out, client, now, args.build_id, bootstrap=args.bootstrap
