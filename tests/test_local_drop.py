@@ -399,3 +399,40 @@ def test_expiration_during_staging_is_rejected_at_fresh_validation_time(
     assert not (tmp_path / "first").exists()
     assert not list(tmp_path.glob(".first.*"))
     assert all(row["accepted"] is None for row in read_state(local)["sources"].values())
+
+
+@pytest.mark.parametrize("previous_success", [False, True])
+def test_expiration_during_baseline_save_rejects_publication_and_restores_success(
+    tmp_path, local, monkeypatch, previous_success
+):
+    from ipbeaco import local_drop
+
+    prior = {sid: None for sid in IDS}
+    old_output = {}
+    if previous_success:
+        assert cli.main(args(tmp_path, local)) == 0
+        prior = {sid: row["accepted"] for sid, row in read_state(local)["sources"].items()}
+        old_output = {p.name: p.read_bytes() for p in (tmp_path / "first").iterdir()}
+    later = NOW + timedelta(hours=24) if previous_success else NOW
+    current = [later]
+    monkeypatch.setattr(cli, "utc_now", lambda: current[0])
+    local[2].update({4: payload(V4, later), 6: payload(V6, later)})
+    original_save = local_drop._save_state
+
+    def save(data, directory):
+        original_save(data, directory)
+        if all(
+            row["accepted"] is not None and row["accepted"]["generated_at"] == later.isoformat()
+            for row in data["sources"].values()
+        ):
+            current[0] = later + timedelta(hours=48)
+
+    monkeypatch.setattr(local_drop, "_save_state", save)
+    assert cli.main(args(tmp_path, local, "second")) == 1
+    assert not (tmp_path / "second").exists()
+    assert not list(tmp_path.glob(".second.*"))
+    state = read_state(local)["sources"]
+    assert {sid: row["accepted"] for sid, row in state.items()} == prior
+    assert all(row["last_attempt_at"] == later.isoformat() for row in state.values())
+    if previous_success:
+        assert old_output == {p.name: p.read_bytes() for p in (tmp_path / "first").iterdir()}

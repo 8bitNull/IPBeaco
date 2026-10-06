@@ -412,15 +412,17 @@ def run_local_drop(
             validate_local_drop(stage, clock() if clock else completed_at)
             if output.exists() or output.is_symlink():
                 raise FileExistsError(f"Output already exists: {output}")
-            # Persist before visibility; roll back success baselines on a rename
-            # failure while retaining the durable request attempts.
+            # Persist before visibility, then check the fresh time again: fsync
+            # can cross expiry. Roll back success on validation/rename failure,
+            # retaining the durable request attempts.
             prior = {sid: state["sources"][sid]["accepted"] for sid in accepted}
             try:
                 for sid, baseline in accepted.items():
                     state["sources"][sid]["accepted"] = baseline
                 _save_state(state, state_dir)
+                validate_local_drop(stage, clock() if clock else completed_at)
                 stage.rename(output)
-            except OSError:
+            except (OSError, ValueError):
                 for sid, baseline in prior.items():
                     state["sources"][sid]["accepted"] = baseline
                 _save_state(state, state_dir)
